@@ -1,0 +1,51 @@
+/**
+ *枚举字符串每个位置i，
+ *求以位置i上的字符结尾的满足条件的最长子串长len
+ *将各个长度len求和即为所求
+ *对len可以这样理解：
+ *当前字符a[i]的出现，对于以位置i结尾的满足条件的最长子串而已，
+ *i前面的各个字符（包括i自身）作为开头，都增益了一个子串数。
+ *如abcdc，k值为1时，b的出现使得a字符增加了一个子串ab，b增加了b；
+ *第一个c的出现使得a字符增加了一个子串abc，b字符增加了一个子串ab，c增加了c
+ *第二个c出现时，满足条件的最长串为dc，则d增加一个子串dc，（第二个）c增加了c。
+ */
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+typedef long long LL;
+const int SIZEN = 100005;
+char str[SIZEN];
+int cnt[30];
+void init(int n){
+    memset(cnt,0,sizeof(cnt));
+}
+int main(){
+    int _,len,k,t_len;
+    LL ans;
+    scanf("%d",&_);
+    while(_--){
+        scanf("%s",str);
+        scanf("%d",&k);
+        len=strlen(str);
+        init(len);
+        ans=t_len=0;
+        int pos=0;
+        for(int i=0;i<len;i++){
+            int id = str[i] - 'a';
+            cnt[id] ++;
+            if(cnt[id]>k){
+                while(1){
+                    cnt[ str[pos] - 'a' ] --;
+                    pos ++;
+                    if(str[pos-1] == str[i])break; //从开头寻找与当前i相同字符的位置
+                }
+                t_len=i-pos+1;
+            }
+            else t_len ++;
+            ans += t_len;
+        }
+        printf("%I64d\n",ans);
+    }
+    return 0;
+}
