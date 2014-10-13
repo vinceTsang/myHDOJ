@@ -1,0 +1,55 @@
+/**
+ * dp[i][j]表示以i,j结尾的最大值
+ * 则dp[i][j]=max(dp[k][i])+1,k小于等于i
+ * 同时优化对k的扫描
+ */
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+const int MAXN=4200000;
+int a[MAXN];
+int b[MAXN];
+int dp[2010][2010];
+
+int main(){
+    int T;
+    scanf("%d",&T);
+    while(T--){
+        int n,m,i,j,k;
+        scanf("%d%d",&n,&m);
+        memset(a,0,sizeof(a));
+        for(i=0;i<n;i++){
+            int x;
+            scanf("%d",&x);
+            a[x]++;
+        }
+        int cnt=0;
+        for(i=1;i<=m;i++){
+            if(a[i]) b[++cnt]=i;
+        }
+        memset(dp,0,sizeof(dp));
+        int ans=0;
+        for(i=1;i<=cnt;i++){
+            dp[i][i]=a[ b[i] ];
+            ans=max(ans,dp[i][i]);
+        }
+        for(i=1;i<=cnt;i++){
+            k=i;
+            int tmp=dp[i][i];
+            for(j=i+1;j<=cnt;j++){
+                for(;k && b[i]-b[k] <= b[j]-b[i]; k--){
+                    //k越小越可能不满足第二个条件,找尽可能小的k,k不必重新初始化确保整段最多只搜索一次
+                    //j值较小时对k要求苛刻,不满足则暂停搜索取当前最大dp
+                    //较大的j对k要求更宽松,有机会搜索到前面的更大的dp
+                    tmp=max(tmp,dp[k][i]+1);
+                }
+                dp[i][j]=tmp;
+                ans=max(ans,tmp); //搜索的过程即能获得全局最大dp值,不用最后再搜一遍
+            }
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}
