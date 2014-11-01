@@ -1,0 +1,26 @@
+//sum=( sum + 1ll*( 1ll*(n-i+1)*i%MOD)*tmp )%MOD;
+//而sum=( sum + ( 1ll*(n-i+1)*i*tmp%MOD ) )%MOD;错误
+//因为n最大为447000，平方后需要先取模，否则越界
+#include <iostream>
+#include <cstdio>
+using namespace std;
+const int MAXN=447005;
+const int MOD=1000000007;
+typedef long long ll;
+int main()
+{
+    //freopen("d:\\inputDate.txt","r",stdin);
+    int T,n,i;
+    scanf("%d",&T);
+    ll tmp;
+    while(T--){
+        scanf("%d",&n);
+        ll sum=0;
+        for(i=1;i<=n;i++){
+            scanf("%I64d",&tmp);
+            sum=( sum + 1ll*( 1ll*(n-i+1)*i%MOD)*tmp )%MOD;
+        }
+        printf("%I64d\n",sum);
+    }
+    return 0;
+}
