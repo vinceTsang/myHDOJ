@@ -19,6 +19,9 @@ int main()
         for(i=1;i<=n;i++){
             scanf("%I64d",&tmp);
             sum=( sum + 1ll*( 1ll*(n-i+1)*i%MOD)*tmp )%MOD;
+                //内部的1ll是必须添加的，因为内部先计算，式子第一次超过int到达long long
+                //乘以1ll后变为long long 再与后面计算，由于之后计算遇到的sum和tmp都是long long 类型
+                //故外部（最左）的1ll不是必须的
         }
         printf("%I64d\n",sum);
     }
