@@ -1,0 +1,33 @@
+/**
+ * 最大连续子序列和，dp
+ * 记dp[i]为以i为子序列末端(含i)的最大连续和
+ * 则转移方程为dp[i]=max{ dp[i-1]+a[i],a[i] }
+ * 即若dp[i-1]<0时，直接取a[i] (因为必须得包含a[i]) ，同时记录left=i
+ * 状态转移复杂度为O(n)，中间记录各dp中的最大值即为，同时得到所求endPos，且startPos=left
+ */
+#include <iostream>
+#include <cstdio>
+#define rep(i,n) for(int i=0;i<(n);i++)
+#define INF 0xfffffff
+using namespace std;
+
+int main()
+{
+    int i,T,n,a,sum,MAX,left,startP,endP;
+    scanf("%d",&T);
+    rep(cas,T){
+        scanf("%d",&n);
+        sum=MAX=-INF;
+        rep(i,n){
+            scanf("%d",&a);
+            if(sum<0) sum=a, left=i;
+            else sum+=a;
+            if(sum>MAX) MAX=sum, startP=left, endP=i;
+        }
+        if(cas)
+            printf("\n");
+        printf("Case %d:\n",cas+1);
+        printf("%d %d %d\n",MAX,startP+1,endP+1);
+    }
+    return 0;
+}
