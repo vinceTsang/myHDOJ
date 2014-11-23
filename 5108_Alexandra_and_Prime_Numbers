@@ -1,0 +1,37 @@
+/*
+ * 若要先筛选出质数
+ * 注意第35W个质数超过了1000W
+ * 而前35W时（且足够大），第i个质数略大于10i
+ */
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+using namespace std;
+typedef long long ll;
+ll solve(ll n){
+    ll tmp=n;
+    double xx=n;
+    xx=sqrt(xx);
+    for(ll i=2;i<=xx;i++){
+        while(tmp>1){
+            if(tmp%i!=0) break;
+            if(tmp==i) return i; //返回最后一个质数
+            tmp/=i;
+        }
+    }
+    return tmp; //最后剩下的tmp没有被根号n前的质数除尽，则tmp本身是个质数
+}
+int main()
+{
+    ll n,m;
+    while(scanf("%I64d",&n)!=EOF){
+        if(n<=1){
+            printf("0\n");
+            continue;
+        }
+        m=n/solve(n);
+        printf("%I64d\n",m);
+    }
+    return 0;
+}
