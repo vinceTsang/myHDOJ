@@ -1,0 +1,27 @@
+#include <iostream>
+#include <cstdio>
+#include <map>
+//#include <cstring>
+#include <string>
+using namespace std;
+int main(){
+    map<string,int> color_map;
+    int n,i;
+    string s_cur;
+    while(scanf("%d",&n),n!=0){
+        for(i=0;i<n;i++){
+            cin>>s_cur;
+            color_map[s_cur]++; //初始默认都是0
+        }
+        map<string,int>::iterator it;
+        int max=0;
+        for(it=color_map.begin();it!=color_map.end();++it){
+            if(it->second > max){
+                max=it->second;
+                s_cur=it->first;
+            }
+        }
+        cout<<s_cur<<endl;
+        color_map.clear();
+    }
+}
