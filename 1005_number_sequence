@@ -40,7 +40,7 @@ int main(){
             }
         }
         n-=head;
-        if(n%k==0) n=k;
+        if(n%k==0) n=k; //对周期取余，若整除应取最后一个
         else n%=k;
         printf("%d\n",num[head+n]);
     }
