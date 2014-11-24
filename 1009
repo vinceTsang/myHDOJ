@@ -1,0 +1,35 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+const int MAXN=1002;
+struct node{
+    int j,f;
+    float price;
+}rooms[MAXN];
+int cmp(node a, node b){
+    return a.price<b.price;
+}
+int main(){
+    int m,n,j,f,i;
+    while(scanf("%d%d",&m,&n), m!=-1&&n!=-1){
+        for(i=0;i<n;i++){
+            scanf("%d%d",&j,&f);
+            rooms[i].j=j, rooms[i].f=f;
+            rooms[i].price=(float)f/(float)j;
+        }
+        sort(rooms,rooms+n,cmp);
+        float ans=0;
+        for(i=0;i<n;i++){
+            if(m>=rooms[i].f){
+                ans+=rooms[i].j;
+                m-=rooms[i].f;
+            }else{
+                ans+=((float)m/(float)rooms[i].f)*rooms[i].j;
+                break;
+            }
+        }
+        printf("%.3f\n",ans);
+    }
+    return 0;
+}
