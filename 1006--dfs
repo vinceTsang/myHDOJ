@@ -1,0 +1,44 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+bool visit[20];
+int a[20];
+int n;
+bool check_prime(int x){
+    for(int i=2;i<=x/2;i++){
+        if(x%i==0)return false;
+    }
+    return true;
+}
+bool dfs(int index){
+    if(index==n){
+        if(!check_prime(a[index]+a[1])) return false;
+        for(int i=1;i<=n;i++){
+            printf("%d",a[i]);
+            if(i!=n) printf(" ");
+            else printf("\n");
+        }
+        return true;
+    }
+    for(int i=2;i<=n;i++){
+        if(!visit[i] && check_prime(i+a[index]) ){
+            a[index+1]=i; visit[i]=true;
+            dfs(index+1);
+            visit[i]=false; //无论递归深搜结果如何，都继续进行已获得所有解
+        }
+    }
+    return false;
+}
+int main()
+{
+    int T=0;
+    while(scanf("%d",&n)!=EOF){
+        printf("Case %d:\n",++T);
+        memset(visit,false,sizeof(visit));
+        a[1]=1, visit[1]=true;
+        dfs(1);
+        printf("\n");
+    }
+    return 0;
+}
