@@ -1,0 +1,48 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+bool visit[7][7];
+char maze[7][7];
+int N,M,eI,eJ;
+int dir[8]={0,1, 1,0, 0,-1, -1,0};
+int abs(int x){ return x<0?-x:x; }
+bool dfs(int x,int y,int moves){
+    if(moves==0 && x==eI && y==eJ)
+        return true;
+    if(moves==0 || (x==eI && y==eJ) ) return false;
+    int ss=abs(x-eI)+abs(y-eJ);
+    if( ss > moves ) return false;
+    if( (moves-ss)%2==1 ) return false; //剩余的时间减去距离的差为奇数时必无解
+    for(int i=0;i<8;i+=2){
+        int xx=x+dir[i], yy=y+dir[i+1];
+        if(xx<0 || yy<0 || xx>=N || yy>=M || visit[xx][yy]==true )continue;
+        if(maze[xx][yy]=='.'){
+            visit[xx][yy]=true;
+            if(dfs(xx,yy,moves-1)) return true;
+            else visit[xx][yy]=false;
+        }
+    }
+    return false;
+}
+int main(){
+    char tmp;
+    int t,i,j,sI,sJ;
+    while(scanf("%d%d%d",&N,&M,&t),N|M|t){
+        getchar(); //处理scanf("%c")时，前后的回车都需要先getchar();
+        for(i=0;i<N;i++){
+            for(j=0;j<M;j++){
+                scanf("%c",&tmp);
+                maze[i][j]=tmp;
+                if(tmp=='S') sI=i,sJ=j;
+                if(tmp=='D') eI=i,eJ=j,maze[i][j]='.';
+            }
+            getchar(); //
+        }
+        memset(visit,false,sizeof(visit));
+        visit[sI][sJ]=true;
+        if(dfs(sI,sJ,t)) printf("YES\n");
+        else printf("NO\n");
+    }
+    return 0;
+}
