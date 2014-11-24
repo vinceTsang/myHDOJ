@@ -1,0 +1,47 @@
+/**
+ * 由于mod 7，而当前两个数相同时所得必相同，有循环节
+ * 由于每个数均小于7，则两个数可能的配对情况有49种
+ * 则循环节必定小于等于49.
+ * 对n直接mod 49不可取，因为循环节可能不整除49
+ * 正解是先计算出前98个解（如果n大于98的话）
+ * 然后找出最小正周期，即可求解
+ */
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+int A,B;
+int function(int x,int y){
+    return (A*x + B*y)%7;
+}
+int main(){
+    int n,i,k,head;
+    int num[100];
+    int map[7][7];
+    while(scanf("%d%d%d",&A,&B,&n),A+B+n!=0){
+        memset(num,0,sizeof(num));
+        num[1]=num[2]=1;
+        for(i=3;i<98;i++){
+            num[i]=function(num[i-1],num[i-2]);
+        }
+        memset(map,0,sizeof(map));
+        int start_num,end_num;
+        for(i=1;i<97;i++){
+            if( ++map[ num[i] ][ num[i+1] ] > 1 ) {
+                start_num=num[i], end_num=num[i+1];
+                k=i;
+                break;
+            }
+        }
+        for(i=1;i<97;i++){
+            if(num[i]==start_num && num[i+1]==end_num){
+                head=i-1, k=k-i;
+                break;
+            }
+        }
+        n-=head;
+        if(n%k==0) n=k;
+        else n%=k;
+        printf("%d\n",num[head+n]);
+    }
+}
