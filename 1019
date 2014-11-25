@@ -1,0 +1,29 @@
+/**
+ * 两数最小公倍数为乘积除以最大公约数
+ * 求公约数应用gcd递归求(辗转相除)
+ * 注意求公倍数时不应该先乘再除，先乘可能溢出
+ */
+#include <iostream>
+#include <cstdio>
+using namespace std;
+int gcd(int a,int b){
+    return b?gcd(b,a%b):a;
+}
+int main()
+{
+    int T,i,n,x,y;
+    scanf("%d",&T);
+    while(T--){
+        scanf("%d",&n);
+        x=1;
+        for(i=0;i<n;i++){
+            scanf("%d",&y);
+            //x=x*y/gcd(x,y); WA,先成可能溢出!
+            //同理，思考二分查找时取中点mid=(left+right)/2可能先溢出
+            //应mid=left+(right-left)/2
+            x=x/gcd(x,y)*y;
+        }
+        printf("%d\n",x);
+    }
+    return 0;
+}
