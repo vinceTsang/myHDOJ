@@ -1,0 +1,51 @@
+/**
+ * 基本拓扑排序
+ * ps.接近半年没碰算法了，随时题比较水，但1A还是比较开心的
+ */
+#include <cstdio>
+#include <memory.h>
+struct node{
+    int nexts[10001];
+    int out;
+    int in;
+    bool visit;
+}nodes[100];
+
+int main()
+{
+    //freopen("E:\\wks\\OJ\\inputData.txt","r",stdin);
+    int n, m, a, b, tmp;
+    int zeros[100];
+    while(scanf("%d %d",&n, &m)!=EOF){
+        int counts = 0;
+        memset(nodes,0,100 * sizeof(node));
+        for(int i=0; i<m; ++i){
+            scanf("%d %d",&a, &b);
+            nodes[b].nexts[ nodes[b].out++ ] = a;
+            nodes[a].in++;
+        }
+        while(counts < n){
+            int zero_count = 0;
+            for(int i=1; i<=n; ++i){
+                if(nodes[i].in == 0 && nodes[i].visit == 0){
+                    zeros[zero_count++] = i;
+                }
+            }
+            if(zero_count == 0)
+                break;
+            for(int j=0; j<zero_count; ++j){
+                tmp = zeros[j];
+                for(int k=0; k<nodes[tmp].out; ++k){
+                    nodes[ nodes[tmp].nexts[k] ].in--;
+                }
+                nodes[tmp].visit = 1;
+            }
+            counts += zero_count;
+        }
+        if(counts == n)
+            printf("YES\n");
+        else
+            printf("NO\n");
+    }
+    return 0;
+}
