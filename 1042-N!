@@ -1,0 +1,78 @@
+/**
+ * 大整数乘法
+ * 自然可用字符数组模拟
+ * 但更优的是用万进制法
+ */
+
+//字符数组模拟
+#include <iostream>
+#include <memory.h>
+#include <cstdio>
+using namespace std;
+const int maxn = 36000;
+int f[maxn];
+int main()
+{
+    int n;
+    int i,j;
+    while(cin>>n) {
+        memset(f,0,sizeof(f));
+        f[0]=1;
+        for(i=2;i<=n;i++)
+        {
+            int c=0;  //存且只存一个carry
+            for(j=0;j<maxn;j++)
+            {
+                int s=f[j]*i+c;
+                f[j]=s%10;
+                c=s/10;
+            }
+        }
+        for(j=maxn-1;j>=0;j--)
+            if(f[j]) break;
+        for(i=j;i>=0;i--)
+            printf("%d",f[i]);
+        printf("\n");
+    }
+    return 0;
+}
+
+//万进制
+#include <iostream>
+#include <memory.h>
+#include <cstdio>
+#include <iomanip>
+using namespace std;
+const int maxn = 9000;
+int f[maxn];  //万进制数组，每个元素的取值为0-9999，
+int main()
+{
+    int n;
+    int i,j;
+    while(cin>>n) {
+        memset(f,0,sizeof(f));
+		f[0]=1;
+		int place=1;
+		for(i=2;i<=n;i++)
+		{
+			int carry=0;
+			for(j=0;j<place;j++)
+			{
+				int tmp=f[j]*i+carry;  //各数组元素依次作乘法并以万进制进位
+				carry = tmp/10000;  //大于10000，进位
+				f[j] = tmp%10000;
+			}
+			if(carry>0){
+                f[place]=carry;
+                ++place;
+			}
+		}
+		cout<<f[--place];
+		for(int i=place-1;i>=0;i--){
+            cout<<setw(4)<<setfill('0')<<f[i]; //不足4位的元素首部补0
+		}
+		cout<<endl;
+    }
+    return 0;
+}
+
